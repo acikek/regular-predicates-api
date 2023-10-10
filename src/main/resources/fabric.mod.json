@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "id": "predicate",
+  "version": "${version}",
+  "name": "regular-predicates-api",
+  "description": "",
+  "authors": [],
+  "contact": {
+    "repo": "https://github.com/acikek/regular-predicates-api"
+  },
+  "license": "MIT",
+  "icon": "assets/predicate/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "com.acikek.predicate.client.RegularPredicatesClient"
+    ],
+    "main": [
+      "com.acikek.predicate.RegularPredicatesMod"
+    ]
+  },
+  "mixins": [
+    "predicate.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  },
+  "custom": {
+    "loom:injected_interfaces": {
+      "net/minecraft/class_2105": ["com/acikek/predicate/api/RegularPredicate"],
+      "net/minecraft/class_4559": ["com/acikek/predicate/api/RegularPredicate"]
+    }
+  }
+}

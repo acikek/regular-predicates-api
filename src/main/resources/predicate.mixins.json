@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.acikek.predicate.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "NbtPredicateMixin",
+    "StatePredicateMixin"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
