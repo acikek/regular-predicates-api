@@ -11,17 +11,17 @@ import org.spongepowered.asm.mixin.Mixin;
 public class NbtPredicateMixin implements RegularPredicate<NbtElement> {
 
     @Override
-    public Class<NbtElement> contextType() {
+    public Class<NbtElement> rp$contextType() {
         return NbtElement.class;
     }
 
     @Override
-    public RegularPredicateSerializer<? extends RegularPredicate<NbtElement>> serializer() {
+    public RegularPredicateSerializer<? extends RegularPredicate<NbtElement>> rp$serializer() {
         return RegularPredicates.NBT;
     }
 
     @Override
-    public boolean test(NbtElement nbtElement) {
+    public boolean rp$test(NbtElement nbtElement) {
         return ((NbtPredicate) (Object) this).test(nbtElement);
     }
 }

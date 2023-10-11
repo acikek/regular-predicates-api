@@ -24,7 +24,7 @@ public record PointPredicate(int x, int y) implements RegularPredicate<PointPred
     public record Context(int x, int y) {}
 
     @Override
-    public Class<Context> contextType() {
+    public Class<Context> rp$contextType() {
         return Context.class;
     }
 
@@ -34,7 +34,7 @@ public record PointPredicate(int x, int y) implements RegularPredicate<PointPred
     }
 
     @Override
-    public RegularPredicateSerializer<? extends RegularPredicate<Context>> serializer() {
+    public RegularPredicateSerializer<? extends RegularPredicate<Context>> rp$serializer() {
         return SERIALIZER;
     }
 

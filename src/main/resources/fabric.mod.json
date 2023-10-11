@@ -12,9 +12,6 @@
   "icon": "assets/predicate/icon.png",
   "environment": "*",
   "entrypoints": {
-    "client": [
-      "com.acikek.predicate.client.RegularPredicatesClient"
-    ],
     "main": [
       "com.acikek.predicate.RegularPredicatesMod"
     ]

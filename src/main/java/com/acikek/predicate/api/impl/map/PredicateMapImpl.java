@@ -11,9 +11,9 @@ public record PredicateMapImpl(ImmutableMap<String, RegularPredicate<?>> predica
 
     private static <T> boolean test(String name, Object value, RegularPredicate<T> predicate) {
         Objects.requireNonNull(predicate);
-        Objects.requireNonNull(predicate.contextType());
+        Objects.requireNonNull(predicate.rp$contextType());
         try {
-            var input = predicate.contextType().cast(value);
+            var input = predicate.rp$contextType().cast(value);
             return predicate.test(input);
         }
         catch (ClassCastException exception) {

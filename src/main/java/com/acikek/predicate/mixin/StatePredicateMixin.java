@@ -19,17 +19,17 @@ public abstract class StatePredicateMixin implements RegularPredicate<State<?, ?
     @Shadow public abstract boolean test(FluidState state);
 
     @Override
-    public Class<State<?, ?>> contextType() {
+    public Class<State<?, ?>> rp$contextType() {
         return (Class<State<?, ?>>) (Class<?>) State.class;
     }
 
     @Override
-    public RegularPredicateSerializer<? extends RegularPredicate<State<?, ?>>> serializer() {
+    public RegularPredicateSerializer<? extends RegularPredicate<State<?, ?>>> rp$serializer() {
         return RegularPredicates.STATE;
     }
 
     @Override
-    public boolean test(State<?, ?> state) {
+    public boolean rp$test(State<?, ?> state) {
         if (state instanceof BlockState blockState) {
             return test(blockState);
         }
