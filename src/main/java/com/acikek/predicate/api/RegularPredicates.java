@@ -7,6 +7,7 @@ import com.google.gson.JsonElement;
 import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.predicate.NbtPredicate;
+import net.minecraft.predicate.NumberRange;
 import net.minecraft.predicate.StatePredicate;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
@@ -19,7 +20,7 @@ public class RegularPredicates {
 
     public static final RegularPredicateSerializer<NbtPredicate> NBT = PredicateSerializers.delegated(NbtPredicate::fromJson, NbtPredicate::toJson);
     public static final RegularPredicateSerializer<StatePredicate> STATE = PredicateSerializers.delegated(StatePredicate::fromJson, StatePredicate::toJson);
-
+    public static final RegularPredicateSerializer<NumberRange.IntRange> INT = PredicateSerializers.delegated(NumberRange.IntRange::fromJson, NumberRange.IntRange::toJson);
 
     public static <P extends RegularPredicate<?>> RegularPredicateSerializer<P> serializer(P predicate) {
         return (RegularPredicateSerializer<P>) predicate.rp$serializer();

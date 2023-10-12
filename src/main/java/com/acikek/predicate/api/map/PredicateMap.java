@@ -8,6 +8,7 @@ public interface PredicateMap {
 
     boolean test(String name, Object value);
 
+    // TODO: up to implementation?
     default boolean test(Map<String, Object> map) {
         for (var entry : map.entrySet()) {
             if (!test(entry.getKey(), entry.getValue())) {

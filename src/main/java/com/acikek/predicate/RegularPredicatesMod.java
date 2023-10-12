@@ -4,6 +4,7 @@ import com.acikek.predicate.api.RegularPredicates;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.predicate.NbtPredicate;
+import net.minecraft.predicate.NumberRange;
 import net.minecraft.predicate.StatePredicate;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.Identifier;
@@ -38,6 +39,9 @@ public class RegularPredicatesMod implements ModInitializer {
         var newState = RegularPredicates.STATE.fromJson(json);
         System.out.println(json);
         System.out.println(RegularPredicates.toJson(newState));
+
+        var intRange = NumberRange.IntRange.between(10, 200);
+        System.out.println(RegularPredicates.toJson(intRange));
 
         /*PredicateMap map = new PredicateMapImpl(
                 ImmutableMap.of(

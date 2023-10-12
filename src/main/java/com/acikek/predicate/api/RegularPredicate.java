@@ -4,6 +4,8 @@ import com.acikek.predicate.api.serializer.RegularPredicateSerializer;
 
 import java.util.function.Predicate;
 
+// TODO: reimplement predicate class with prefixes?
+// TODO: RegularPredicateContainer for mixin'd classes to implement?
 public interface RegularPredicate<T> extends Predicate<T> {
 
     default Class<T> rp$contextType() {
