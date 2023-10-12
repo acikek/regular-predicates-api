@@ -26,8 +26,8 @@
   },
   "custom": {
     "loom:injected_interfaces": {
-      "net/minecraft/class_2105": ["com/acikek/predicate/api/RegularPredicate"],
-      "net/minecraft/class_4559": ["com/acikek/predicate/api/RegularPredicate"]
+      "net/minecraft/class_2105": ["com/acikek/predicate/api/impl/wrapper/NbtPredicateWrapper"],
+      "net/minecraft/class_4559": ["com/acikek/predicate/api/impl/wrapper/StatePredicateWrapper"]
     }
   }
 }

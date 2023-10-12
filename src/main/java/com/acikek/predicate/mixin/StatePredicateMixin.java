@@ -2,6 +2,7 @@ package com.acikek.predicate.mixin;
 
 import com.acikek.predicate.api.RegularPredicate;
 import com.acikek.predicate.api.RegularPredicates;
+import com.acikek.predicate.api.impl.wrapper.StatePredicateWrapper;
 import com.acikek.predicate.api.serializer.RegularPredicateSerializer;
 import net.minecraft.block.BlockState;
 import net.minecraft.fluid.FluidState;
@@ -12,7 +13,7 @@ import org.spongepowered.asm.mixin.Shadow;
 
 @SuppressWarnings("unchecked")
 @Mixin(StatePredicate.class)
-public abstract class StatePredicateMixin implements RegularPredicate<State<?, ?>> {
+public abstract class StatePredicateMixin implements StatePredicateWrapper {
 
     @Shadow public abstract boolean test(BlockState state);
 
