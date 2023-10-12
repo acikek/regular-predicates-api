@@ -33,7 +33,11 @@ public class RegularPredicatesMod implements ModInitializer {
                 .exactMatch(Properties.POWERED, true)
                 .exactMatch(Properties.FACING, "north")
                 .build();
-        System.out.println(RegularPredicates.serializer(statePredicate).toJson(statePredicate));
+
+        var json = RegularPredicates.toJson(statePredicate);
+        var newState = RegularPredicates.STATE.fromJson(json);
+        System.out.println(json);
+        System.out.println(RegularPredicates.toJson(newState));
 
         /*PredicateMap map = new PredicateMapImpl(
                 ImmutableMap.of(
