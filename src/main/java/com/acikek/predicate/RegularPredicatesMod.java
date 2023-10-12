@@ -1,12 +1,11 @@
 package com.acikek.predicate;
 
-import com.acikek.predicate.api.impl.map.PredicateMapImpl;
-import com.acikek.predicate.api.map.PredicateMap;
-import com.acikek.predicate.impl.PointPredicate;
-import com.google.common.collect.ImmutableMap;
+import com.acikek.predicate.api.RegularPredicates;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.predicate.NbtPredicate;
+import net.minecraft.predicate.StatePredicate;
+import net.minecraft.state.property.Properties;
 import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,12 +24,23 @@ public class RegularPredicatesMod implements ModInitializer {
     public void onInitialize() {
         NbtCompound nbt = new NbtCompound();
         nbt.putInt("count", 5);
-        PredicateMap map = new PredicateMapImpl(
+        NbtPredicate predicate = new NbtPredicate(nbt);
+        System.out.println(RegularPredicates.serializer(predicate).toJson(predicate));
+        System.out.println(predicate.test(nbt));
+
+        StatePredicate statePredicate = StatePredicate.Builder.create()
+                .exactMatch(Properties.CANDLES, 3)
+                .exactMatch(Properties.POWERED, true)
+                .exactMatch(Properties.FACING, "north")
+                .build();
+        System.out.println(RegularPredicates.serializer(statePredicate).toJson(statePredicate));
+
+        /*PredicateMap map = new PredicateMapImpl(
                 ImmutableMap.of(
                         "nbt", new NbtPredicate(nbt),
                         "point", new PointPredicate(3, 10)
                 )
         );
-        System.out.println(map.test(nbt, new PointPredicate.Context(3, 10)));
+        System.out.println(map.test(nbt, new PointPredicate.Context(3, 10)));*/
     }
 }

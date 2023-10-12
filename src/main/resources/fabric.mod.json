@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "id": "predicate",
+  "id": "regular_predicates",
   "version": "${version}",
-  "name": "regular-predicates-api",
+  "name": "Regular Predicates API",
   "description": "",
   "authors": [],
   "contact": {

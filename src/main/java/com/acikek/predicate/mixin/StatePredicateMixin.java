@@ -1,6 +1,5 @@
 package com.acikek.predicate.mixin;
 
-import com.acikek.predicate.api.RegularPredicate;
 import com.acikek.predicate.api.RegularPredicates;
 import com.acikek.predicate.api.impl.wrapper.StatePredicateWrapper;
 import com.acikek.predicate.api.serializer.RegularPredicateSerializer;
@@ -25,7 +24,7 @@ public abstract class StatePredicateMixin implements StatePredicateWrapper {
     }
 
     @Override
-    public RegularPredicateSerializer<? extends RegularPredicate<State<?, ?>>> rp$serializer() {
+    public RegularPredicateSerializer<?> rp$serializer() {
         return RegularPredicates.STATE;
     }
 

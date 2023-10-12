@@ -16,4 +16,9 @@ public class RegularPredicates {
 
     public static final RegularPredicateSerializer<NbtPredicate> NBT = PredicateSerializers.delegated(NbtPredicate::fromJson, NbtPredicate::toJson);
     public static final RegularPredicateSerializer<StatePredicate> STATE = PredicateSerializers.delegated(StatePredicate::fromJson, StatePredicate::toJson);
+
+    @SuppressWarnings("unchecked")
+    public static <P extends RegularPredicate<?>> RegularPredicateSerializer<P> serializer(P predicate) {
+        return (RegularPredicateSerializer<P>) predicate.rp$serializer();
+    }
 }

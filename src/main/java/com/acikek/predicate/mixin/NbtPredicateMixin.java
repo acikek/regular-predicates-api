@@ -1,6 +1,5 @@
 package com.acikek.predicate.mixin;
 
-import com.acikek.predicate.api.RegularPredicate;
 import com.acikek.predicate.api.RegularPredicates;
 import com.acikek.predicate.api.impl.wrapper.NbtPredicateWrapper;
 import com.acikek.predicate.api.serializer.RegularPredicateSerializer;
@@ -17,7 +16,7 @@ public abstract class NbtPredicateMixin implements NbtPredicateWrapper {
     }
 
     @Override
-    public RegularPredicateSerializer<? extends RegularPredicate<NbtElement>> rp$serializer() {
+    public RegularPredicateSerializer<?> rp$serializer() {
         return RegularPredicates.NBT;
     }
 }

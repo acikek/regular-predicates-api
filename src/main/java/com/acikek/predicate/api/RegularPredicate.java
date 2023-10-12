@@ -10,7 +10,7 @@ public interface RegularPredicate<T> extends Predicate<T> {
         return null;
     }
 
-    default RegularPredicateSerializer<? extends RegularPredicate<T>> rp$serializer() {
+    default RegularPredicateSerializer<?> rp$serializer() {
         return null;
     }
 
