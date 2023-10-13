@@ -3,9 +3,9 @@ package com.acikek.predicate;
 import com.acikek.predicate.api.RegularPredicates;
 import com.acikek.predicate.api.impl.map.PredicateMapImpl;
 import com.acikek.predicate.api.map.PredicateMap;
-import com.acikek.predicate.impl.PointPredicate;
 import com.google.common.collect.ImmutableMap;
 import net.fabricmc.api.ModInitializer;
+import net.minecraft.block.Blocks;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.predicate.NbtPredicate;
 import net.minecraft.predicate.NumberRange;
@@ -31,30 +31,23 @@ public class RegularPredicatesMod implements ModInitializer {
 
         NbtCompound nbt = new NbtCompound();
         nbt.putInt("count", 5);
-        NbtPredicate predicate = new NbtPredicate(nbt);
-        System.out.println(RegularPredicates.serializer(predicate).toJson(predicate));
-        System.out.println(predicate.test(nbt));
+        NbtPredicate nbtPredicate = new NbtPredicate(nbt);
 
-        /*StatePredicate statePredicate = StatePredicate.Builder.create()
+        StatePredicate statePredicate = StatePredicate.Builder.create()
                 .exactMatch(Properties.CANDLES, 3)
                 .exactMatch(Properties.POWERED, true)
                 .exactMatch(Properties.FACING, "north")
                 .build();
 
-        var json = RegularPredicates.toJson(statePredicate);
-        var newState = RegularPredicates.STATE.fromJson(json);
-        System.out.println(json);
-        System.out.println(RegularPredicates.toJson(newState));
-
         var intRange = NumberRange.IntRange.between(10, 200);
-        System.out.println(RegularPredicates.toJson(intRange));*/
 
         PredicateMap map = new PredicateMapImpl(
                 ImmutableMap.of(
-                        "nbt", new NbtPredicate(nbt),
-                        "point", new PointPredicate(3, 10)
+                        "nbt", nbtPredicate,
+                        "number", intRange,
+                        "state", statePredicate
                 )
         );
-        System.out.println(map.test(nbt, new PointPredicate.Context(3, 10)));
+        System.out.println(map.test(nbt, 100, Blocks.BAMBOO.getDefaultState()));
     }
 }
