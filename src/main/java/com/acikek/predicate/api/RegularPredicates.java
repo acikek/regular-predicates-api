@@ -11,6 +11,7 @@ import net.minecraft.predicate.NumberRange;
 import net.minecraft.predicate.StatePredicate;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
+import net.minecraft.util.Identifier;
 
 @SuppressWarnings("unchecked")
 public class RegularPredicates {
@@ -37,5 +38,9 @@ public class RegularPredicates {
     public static <T, P extends RegularPredicate<T>> boolean test(P predicate, Object value) throws ClassCastException {
         T input = predicate.rp$contextType().cast(value);
         return predicate.test(input);
+    }
+
+    public static Identifier getId(RegularPredicate<?> predicate) {
+        return REGISTRY.getId(predicate.rp$serializer());
     }
 }
