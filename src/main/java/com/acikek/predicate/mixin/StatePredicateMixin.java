@@ -7,6 +7,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.predicate.StatePredicate;
 import net.minecraft.state.State;
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
@@ -19,12 +20,12 @@ public abstract class StatePredicateMixin implements StatePredicateWrapper {
     @Shadow public abstract boolean test(FluidState state);
 
     @Override
-    public Class<State<?, ?>> rp$contextType() {
+    public @NotNull Class<State<?, ?>> rp$contextType() {
         return (Class<State<?, ?>>) (Class<?>) State.class;
     }
 
     @Override
-    public RegularPredicateSerializer<?> rp$serializer() {
+    public @NotNull RegularPredicateSerializer<?> rp$serializer() {
         return RegularPredicates.STATE;
     }
 

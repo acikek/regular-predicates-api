@@ -1,5 +1,9 @@
 package com.acikek.predicate.api.map;
 
+import com.acikek.predicate.api.RegularPredicate;
+import com.acikek.predicate.api.impl.map.PredicateMapImpl;
+import com.google.common.collect.ImmutableMap;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -21,5 +25,9 @@ public interface PredicateMap {
 
     default boolean test(Object... values) {
         return test(Arrays.stream(values).toList());
+    }
+
+    static PredicateMap of(ImmutableMap<String, RegularPredicate<?>> predicates) {
+        return new PredicateMapImpl(predicates);
     }
 }

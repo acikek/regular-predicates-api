@@ -11,6 +11,7 @@ import java.util.Objects;
 
 public record PredicateMapImpl(ImmutableMap<String, RegularPredicate<?>> predicates) implements PredicateMap {
 
+    // TODO switch these to debugs :P
     private static <T> boolean test(String name, Object value, RegularPredicate<T> predicate) {
         Objects.requireNonNull(predicate);
         Objects.requireNonNull(predicate.rp$contextType());

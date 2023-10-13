@@ -41,13 +41,12 @@ public class RegularPredicatesMod implements ModInitializer {
 
         var intRange = NumberRange.IntRange.between(10, 200);
 
-        PredicateMap map = new PredicateMapImpl(
-                ImmutableMap.of(
-                        "nbt", nbtPredicate,
-                        "number", intRange,
-                        "state", statePredicate
-                )
-        );
+        var map = PredicateMap.of(ImmutableMap.of(
+                "nbt", nbtPredicate,
+                "number", intRange,
+                "state", statePredicate
+        ));
+
         System.out.println(map.test(nbt, 100, Blocks.BAMBOO.getDefaultState()));
     }
 }

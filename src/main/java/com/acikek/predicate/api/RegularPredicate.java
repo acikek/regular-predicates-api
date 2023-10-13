@@ -1,14 +1,15 @@
 package com.acikek.predicate.api;
 
 import com.acikek.predicate.api.serializer.RegularPredicateSerializer;
+import org.jetbrains.annotations.NotNull;
 
 public interface RegularPredicate<T> {
 
-    default Class<T> rp$contextType() {
+    default @NotNull Class<T> rp$contextType() {
         throw new AssertionError();
     }
 
-    default RegularPredicateSerializer<?> rp$serializer() {
+    default @NotNull RegularPredicateSerializer<?> rp$serializer() {
         throw new AssertionError();
     }
 
