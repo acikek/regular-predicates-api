@@ -8,6 +8,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * WAIT... TODO.. THIS CAN BE A REGULAR PREDICATE...
+ */
 public interface PredicateMap {
 
     boolean test(String name, Object value);

@@ -4,6 +4,7 @@
   "package": "com.acikek.predicate.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "FloatRangeMixin",
     "IntRangeMixin",
     "NbtPredicateMixin",
     "StatePredicateMixin"
