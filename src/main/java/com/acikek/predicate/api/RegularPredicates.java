@@ -33,4 +33,9 @@ public class RegularPredicates {
     public static <P extends RegularPredicate<?>> void write(PacketByteBuf buf, P predicate) {
         serializer(predicate).write(buf, predicate);
     }
+
+    public static <T, P extends RegularPredicate<T>> boolean test(P predicate, Object value) throws ClassCastException {
+        T input = predicate.rp$contextType().cast(value);
+        return predicate.test(input);
+    }
 }

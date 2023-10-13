@@ -1,6 +1,7 @@
 package com.acikek.predicate.api.impl.map;
 
 import com.acikek.predicate.api.RegularPredicate;
+import com.acikek.predicate.api.RegularPredicates;
 import com.acikek.predicate.api.map.PredicateMap;
 import com.google.common.collect.ImmutableMap;
 
@@ -13,8 +14,7 @@ public record PredicateMapImpl(ImmutableMap<String, RegularPredicate<?>> predica
         Objects.requireNonNull(predicate);
         Objects.requireNonNull(predicate.rp$contextType());
         try {
-            var input = predicate.rp$contextType().cast(value);
-            return predicate.test(input);
+            return RegularPredicates.test(predicate, value);
         }
         catch (ClassCastException exception) {
             throw new IllegalStateException("failed to test predicate '" + name + "'", exception);
