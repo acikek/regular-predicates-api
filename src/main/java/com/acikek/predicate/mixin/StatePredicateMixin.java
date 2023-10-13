@@ -29,7 +29,7 @@ public abstract class StatePredicateMixin implements StatePredicateWrapper {
     }
 
     @Override
-    public boolean test(State<?, ?> state) {
+    public boolean rp$test(State<?, ?> state) {
         if (state instanceof BlockState blockState) {
             return test(blockState);
         }

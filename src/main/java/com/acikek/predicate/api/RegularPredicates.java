@@ -12,6 +12,7 @@ import net.minecraft.predicate.StatePredicate;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.util.Identifier;
+import org.jetbrains.annotations.ApiStatus;
 
 @SuppressWarnings("unchecked")
 public class RegularPredicates {
@@ -35,12 +36,31 @@ public class RegularPredicates {
         serializer(predicate).write(buf, predicate);
     }
 
-    public static <T, P extends RegularPredicate<T>> boolean test(P predicate, Object value) throws ClassCastException {
+    public static <T, P extends RegularPredicate<T>> boolean test(P predicate, T value) {
+        return predicate.rp$test(value);
+    }
+
+    public static <T, P extends RegularPredicate<T>> boolean tryTest(P predicate, Object value) throws ClassCastException {
         T input = predicate.rp$contextType().cast(value);
-        return predicate.test(input);
+        return predicate.rp$test(input);
     }
 
     public static Identifier getId(RegularPredicate<?> predicate) {
         return REGISTRY.getId(predicate.rp$serializer());
+    }
+
+    public static void register(Identifier id, RegularPredicateSerializer<?> serializer) {
+        Registry.register(REGISTRY, id, serializer);
+    }
+
+    private static void registerMc(String name, RegularPredicateSerializer<?> serializer) {
+        register(new Identifier(name), serializer);
+    }
+
+    @ApiStatus.Internal
+    public static void register() {
+        registerMc("nbt", NBT);
+        registerMc("state", STATE);
+        registerMc("int", INT);
     }
 }

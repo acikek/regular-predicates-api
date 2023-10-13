@@ -1,6 +1,10 @@
 package com.acikek.predicate;
 
 import com.acikek.predicate.api.RegularPredicates;
+import com.acikek.predicate.api.impl.map.PredicateMapImpl;
+import com.acikek.predicate.api.map.PredicateMap;
+import com.acikek.predicate.impl.PointPredicate;
+import com.google.common.collect.ImmutableMap;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.predicate.NbtPredicate;
@@ -23,13 +27,15 @@ public class RegularPredicatesMod implements ModInitializer {
 
     @Override
     public void onInitialize() {
+        RegularPredicates.register();
+
         NbtCompound nbt = new NbtCompound();
         nbt.putInt("count", 5);
         NbtPredicate predicate = new NbtPredicate(nbt);
         System.out.println(RegularPredicates.serializer(predicate).toJson(predicate));
         System.out.println(predicate.test(nbt));
 
-        StatePredicate statePredicate = StatePredicate.Builder.create()
+        /*StatePredicate statePredicate = StatePredicate.Builder.create()
                 .exactMatch(Properties.CANDLES, 3)
                 .exactMatch(Properties.POWERED, true)
                 .exactMatch(Properties.FACING, "north")
@@ -41,14 +47,14 @@ public class RegularPredicatesMod implements ModInitializer {
         System.out.println(RegularPredicates.toJson(newState));
 
         var intRange = NumberRange.IntRange.between(10, 200);
-        System.out.println(RegularPredicates.toJson(intRange));
+        System.out.println(RegularPredicates.toJson(intRange));*/
 
-        /*PredicateMap map = new PredicateMapImpl(
+        PredicateMap map = new PredicateMapImpl(
                 ImmutableMap.of(
                         "nbt", new NbtPredicate(nbt),
                         "point", new PointPredicate(3, 10)
                 )
         );
-        System.out.println(map.test(nbt, new PointPredicate.Context(3, 10)));*/
+        System.out.println(map.test(nbt, new PointPredicate.Context(3, 10)));
     }
 }

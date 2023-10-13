@@ -2,9 +2,7 @@ package com.acikek.predicate.api;
 
 import com.acikek.predicate.api.serializer.RegularPredicateSerializer;
 
-import java.util.function.Predicate;
-
-public interface RegularPredicate<T> extends Predicate<T> {
+public interface RegularPredicate<T> {
 
     default Class<T> rp$contextType() {
         throw new AssertionError();
@@ -14,8 +12,7 @@ public interface RegularPredicate<T> extends Predicate<T> {
         throw new AssertionError();
     }
 
-    @Override
-    default boolean test(T t) {
+    default boolean rp$test(T t) {
         throw new AssertionError();
     }
 }

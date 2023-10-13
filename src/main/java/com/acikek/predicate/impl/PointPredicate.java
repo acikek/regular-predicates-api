@@ -29,7 +29,7 @@ public record PointPredicate(int x, int y) implements RegularPredicate<PointPred
     }
 
     @Override
-    public boolean test(Context context) {
+    public boolean rp$test(Context context) {
         return x == context.x && y == context.y;
     }
 
