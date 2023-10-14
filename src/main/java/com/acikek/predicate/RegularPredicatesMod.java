@@ -4,7 +4,6 @@ import com.acikek.predicate.api.RegularPredicates;
 import com.acikek.predicate.api.schema.PredicateSchema;
 import com.acikek.predicate.api.schema.SchemaElement;
 import com.acikek.predicate.api.schema.map.PredicateMap;
-import com.acikek.predicate.api.schema.map.PredicateMapFunny;
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.GsonBuilder;
 import net.fabricmc.api.ModInitializer;
@@ -19,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+import java.util.Map;
 
 public class RegularPredicatesMod implements ModInitializer {
 
@@ -45,31 +45,29 @@ public class RegularPredicatesMod implements ModInitializer {
                 .build();
 
         var intRange = NumberRange.IntRange.between(10, 200);
-
-        var map = PredicateMap.of(ImmutableMap.of(
-                "nbt", nbtPredicate,
-                "number", intRange,
-                "state", statePredicate
-        ));
-
-        System.out.println(map.test(nbt, 100, Blocks.BAMBOO.getDefaultState()));
+        var floatRange = NumberRange.FloatRange.between(0.0, 1.0);
 
         var schema = new PredicateSchema(List.of(
                 SchemaElement.type("count", RegularPredicates.INT_RANGE),
                 SchemaElement.type("nbt", RegularPredicates.NBT),
                 SchemaElement.map("usage", List.of(
-                        SchemaElement.type("block", RegularPredicates.STATE),
-                        SchemaElement.type("damage", RegularPredicates.FLOAT_RANGE)
+                        SchemaElement.type("damage", RegularPredicates.FLOAT_RANGE),
+                        SchemaElement.type("state", RegularPredicates.STATE)
                 ))
         ));
 
         System.out.println(new GsonBuilder().setPrettyPrinting().create().toJson(schema.toJson()));
 
-        var mapv2 = new PredicateMapFunny(ImmutableMap.of(
+        var mapv2 = new PredicateMap(schema, ImmutableMap.of(
                 "count", intRange,
-                "nbt", nbtPredicate
+                "nbt", nbtPredicate,
+                "usage", new PredicateMap(ImmutableMap.of( // TODO: schema being generated here -- maybe api for grabbing subschema (like what happens in deser)
+                        "damage", floatRange,
+                        "state", statePredicate
+                ))
         ));
 
         System.out.println(new GsonBuilder().setPrettyPrinting().create().toJson(mapv2.schema().toJson()));
+        System.out.println(mapv2.test(100, nbt, Map.of("damage", 0.4, "state", Blocks.BAMBOO.getDefaultState())));
     }
 }

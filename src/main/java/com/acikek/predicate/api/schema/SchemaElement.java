@@ -3,7 +3,7 @@ package com.acikek.predicate.api.schema;
 import com.acikek.predicate.api.RegularPredicate;
 import com.acikek.predicate.api.RegularPredicates;
 import com.acikek.predicate.api.impl.schema.SchemaElementImpls;
-import com.acikek.predicate.api.schema.map.PredicateMapFunny;
+import com.acikek.predicate.api.schema.map.PredicateMap;
 import com.acikek.predicate.api.serializer.RegularPredicateSerializer;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -29,7 +29,7 @@ public interface SchemaElement {
     Collection<SchemaElement> children();
 
     // Neat, these methods call each other
-    static boolean test(Collection<SchemaElement> elements, PredicateMapFunny map) {
+    static boolean test(Collection<SchemaElement> elements, PredicateMap map) {
         for (var element : elements) {
             var predicate = map.predicates().get(element.name());
             if (predicate == null || !element.test(predicate)) {
@@ -40,7 +40,7 @@ public interface SchemaElement {
     }
 
     default boolean test(RegularPredicate<?> predicate) {
-        if (predicate instanceof PredicateMapFunny innerMap && !children().isEmpty()) {
+        if (predicate instanceof PredicateMap innerMap && !children().isEmpty()) {
             return test(children(), innerMap);
         }
         return predicate.rp$serializer() == type();
@@ -82,7 +82,7 @@ public interface SchemaElement {
     }
 
     static SchemaElement fromEntry(String name, RegularPredicate<?> predicate) {
-        if (predicate instanceof PredicateMapFunny map) {
+        if (predicate instanceof PredicateMap map) {
             return SchemaElement.map(name, fromMap(map.predicates()));
         }
         return SchemaElement.type(name, predicate.rp$serializer());

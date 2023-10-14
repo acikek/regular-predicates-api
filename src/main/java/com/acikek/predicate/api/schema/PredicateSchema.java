@@ -3,7 +3,7 @@ package com.acikek.predicate.api.schema;
 import com.acikek.predicate.api.FriendlyPredicate;
 import com.acikek.predicate.api.RegularPredicate;
 import com.acikek.predicate.api.RegularPredicates;
-import com.acikek.predicate.api.schema.map.PredicateMapFunny;
+import com.acikek.predicate.api.schema.map.PredicateMap;
 import com.acikek.predicate.api.serializer.RegularPredicateSerializer;
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonArray;
@@ -16,11 +16,11 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-public record PredicateSchema(Collection<SchemaElement> elements) implements FriendlyPredicate<PredicateMapFunny> {
+public record PredicateSchema(Collection<SchemaElement> elements) implements FriendlyPredicate<PredicateMap> {
 
     @Override
-    public Class<PredicateMapFunny> contextType() {
-        return PredicateMapFunny.class;
+    public Class<PredicateMap> contextType() {
+        return PredicateMap.class;
     }
 
     @Override
@@ -29,7 +29,7 @@ public record PredicateSchema(Collection<SchemaElement> elements) implements Fri
     }
 
     @Override
-    public boolean test(PredicateMapFunny map) {
+    public boolean test(PredicateMap map) {
         return SchemaElement.test(elements, map);
     }
 
@@ -55,7 +55,7 @@ public record PredicateSchema(Collection<SchemaElement> elements) implements Fri
         return array;
     }
 
-    public PredicateMapFunny deserialize(JsonElement json) {
+    public PredicateMap deserialize(JsonElement json) {
         var obj = JsonHelper.asObject(json, "predicate map");
         ImmutableMap.Builder<String, RegularPredicate<?>> builder = new ImmutableMap.Builder<>();
         for (var element : elements) {
@@ -67,6 +67,6 @@ public record PredicateSchema(Collection<SchemaElement> elements) implements Fri
             }
             builder.put(element.name(), element.deserialize(predicateJson));
         }
-        return new PredicateMapFunny(this, builder.build());
+        return new PredicateMap(this, builder.build());
     }
 }
