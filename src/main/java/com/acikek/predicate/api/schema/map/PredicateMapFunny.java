@@ -3,18 +3,31 @@ package com.acikek.predicate.api.schema.map;
 import com.acikek.predicate.api.FriendlyPredicate;
 import com.acikek.predicate.api.RegularPredicate;
 import com.acikek.predicate.api.RegularPredicates;
+import com.acikek.predicate.api.schema.PredicateSchema;
+import com.acikek.predicate.api.serializer.PredicateSerializers;
 import com.acikek.predicate.api.serializer.RegularPredicateSerializer;
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import net.minecraft.network.PacketByteBuf;
 
 import java.util.Map;
 
 @SuppressWarnings("unchecked")
-public record PredicateMapFunny
-        (ImmutableMap<String, RegularPredicate<?>> predicates)
-        implements FriendlyPredicate<Map<String, Object>> {
+public class PredicateMapFunny implements FriendlyPredicate<Map<String, Object>> {
+
+    private final PredicateSchema schema;
+    private final ImmutableMap<String, RegularPredicate<?>> predicates;
+    private final RegularPredicateSerializer<PredicateMapFunny> serializer;
+
+    public PredicateMapFunny(PredicateSchema schema, ImmutableMap<String, RegularPredicate<?>> predicates) {
+        this.schema = schema;
+        this.predicates = predicates;
+        serializer = PredicateSerializers.delegated(schema::deserialize, PredicateMapFunny::toJson);
+    }
+
+    public PredicateMapFunny(ImmutableMap<String, RegularPredicate<?>> predicates) {
+        this(PredicateSchema.fromMap(predicates), predicates);
+    }
 
     @Override
     public Class<Map<String, Object>> contextType() {
@@ -23,7 +36,15 @@ public record PredicateMapFunny
 
     @Override
     public RegularPredicateSerializer<?> serializer() {
-        return null;
+        return serializer;
+    }
+
+    public PredicateSchema schema() {
+        return schema;
+    }
+
+    public ImmutableMap<String, RegularPredicate<?>> predicates() {
+        return predicates;
     }
 
     @Override
@@ -31,30 +52,11 @@ public record PredicateMapFunny
         return false;
     }
 
-    public static class PredicateMapSerializer implements RegularPredicateSerializer<PredicateMapFunny> {
-
-        @Override
-        public PredicateMapFunny fromJson(JsonElement json) {
-            return null;
+    public JsonElement toJson() {
+        JsonObject obj = new JsonObject();
+        for (var entry : predicates.entrySet()) {
+            obj.add(entry.getKey(), RegularPredicates.toJson(entry.getValue()));
         }
-
-        @Override
-        public JsonElement toJson(PredicateMapFunny instance) {
-            JsonObject obj = new JsonObject();
-            for (var entry : instance.predicates.entrySet()) {
-                obj.add(entry.getKey(), RegularPredicates.toJson(entry.getValue()));
-            }
-            return obj;
-        }
-
-        @Override
-        public PredicateMapFunny read(PacketByteBuf buf) {
-            return null;
-        }
-
-        @Override
-        public void write(PacketByteBuf buf, PredicateMapFunny instance) {
-
-        }
+        return obj;
     }
 }

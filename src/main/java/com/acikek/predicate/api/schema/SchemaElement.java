@@ -6,6 +6,7 @@ import com.acikek.predicate.api.impl.schema.SchemaElementImpls;
 import com.acikek.predicate.api.schema.map.PredicateMapFunny;
 import com.acikek.predicate.api.serializer.RegularPredicateSerializer;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSyntaxException;
@@ -16,6 +17,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 public interface SchemaElement {
@@ -70,6 +72,22 @@ public interface SchemaElement {
         return SchemaElement.map(name, children);
     }
 
+    static Collection<SchemaElement> fromMap(Map<String, RegularPredicate<?>> map) {
+        List<SchemaElement> elements = new ArrayList<>();
+        for (var entry : map.entrySet()) {
+            var element = SchemaElement.fromEntry(entry.getKey(), entry.getValue());
+            elements.add(element);
+        }
+        return elements;
+    }
+
+    static SchemaElement fromEntry(String name, RegularPredicate<?> predicate) {
+        if (predicate instanceof PredicateMapFunny map) {
+            return SchemaElement.map(name, fromMap(map.predicates()));
+        }
+        return SchemaElement.type(name, predicate.rp$serializer());
+    }
+
     default JsonObject toJson() {
         var obj = new JsonObject();
         obj.add("name", new JsonPrimitive(name()));
@@ -90,6 +108,17 @@ public interface SchemaElement {
         }
         obj.add("type", array);
         return obj;
+    }
+
+    default RegularPredicate<?> deserialize(JsonElement json) {
+        if (type() != null) {
+            return type().fromJson(json);
+        }
+        else if (children().isEmpty()) {
+            var schema = new PredicateSchema(children());
+            return schema.deserialize(json);
+        }
+        throw new JsonSyntaxException("element must either have a predicate type or children");
     }
 
     static SchemaElement type(String name, RegularPredicateSerializer<?> type) {

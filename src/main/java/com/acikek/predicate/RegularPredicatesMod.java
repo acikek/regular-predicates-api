@@ -4,6 +4,7 @@ import com.acikek.predicate.api.RegularPredicates;
 import com.acikek.predicate.api.schema.PredicateSchema;
 import com.acikek.predicate.api.schema.SchemaElement;
 import com.acikek.predicate.api.schema.map.PredicateMap;
+import com.acikek.predicate.api.schema.map.PredicateMapFunny;
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.GsonBuilder;
 import net.fabricmc.api.ModInitializer;
@@ -63,5 +64,12 @@ public class RegularPredicatesMod implements ModInitializer {
         ));
 
         System.out.println(new GsonBuilder().setPrettyPrinting().create().toJson(schema.toJson()));
+
+        var mapv2 = new PredicateMapFunny(ImmutableMap.of(
+                "count", intRange,
+                "nbt", nbtPredicate
+        ));
+
+        System.out.println(new GsonBuilder().setPrettyPrinting().create().toJson(mapv2.schema().toJson()));
     }
 }
