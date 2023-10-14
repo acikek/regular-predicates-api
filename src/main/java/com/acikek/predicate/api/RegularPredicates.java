@@ -1,6 +1,7 @@
 package com.acikek.predicate.api;
 
 import com.acikek.predicate.RegularPredicatesMod;
+import com.acikek.predicate.api.schema.PredicateSchema;
 import com.acikek.predicate.api.serializer.PredicateSerializers;
 import com.acikek.predicate.api.serializer.RegularPredicateSerializer;
 import com.google.gson.JsonElement;
@@ -22,8 +23,10 @@ public class RegularPredicates {
 
     public static final RegularPredicateSerializer<NbtPredicate> NBT = PredicateSerializers.delegated(NbtPredicate::fromJson, NbtPredicate::toJson);
     public static final RegularPredicateSerializer<StatePredicate> STATE = PredicateSerializers.delegated(StatePredicate::fromJson, StatePredicate::toJson);
-    public static final RegularPredicateSerializer<NumberRange.IntRange> INT = PredicateSerializers.delegated(NumberRange.IntRange::fromJson, NumberRange.IntRange::toJson);
-    public static final RegularPredicateSerializer<NumberRange.FloatRange> FLOAT = PredicateSerializers.delegated(NumberRange.FloatRange::fromJson, NumberRange.FloatRange::toJson);
+    public static final RegularPredicateSerializer<NumberRange.IntRange> INT_RANGE = PredicateSerializers.delegated(NumberRange.IntRange::fromJson, NumberRange.IntRange::toJson);
+    public static final RegularPredicateSerializer<NumberRange.FloatRange> FLOAT_RANGE = PredicateSerializers.delegated(NumberRange.FloatRange::fromJson, NumberRange.FloatRange::toJson);
+
+    public static final RegularPredicateSerializer<PredicateSchema> SCHEMA = PredicateSerializers.delegated(PredicateSchema::fromJson, PredicateSchema::toJson);
 
     public static <P extends RegularPredicate<?>> RegularPredicateSerializer<P> serializer(P predicate) {
         return (RegularPredicateSerializer<P>) predicate.rp$serializer();
@@ -58,10 +61,16 @@ public class RegularPredicates {
         register(new Identifier(name), serializer);
     }
 
+    private static void register(String name, RegularPredicateSerializer<?> serializer) {
+        register(RegularPredicatesMod.id(name), serializer);
+    }
+
     @ApiStatus.Internal
     public static void register() {
         registerMc("nbt", NBT);
         registerMc("state", STATE);
-        registerMc("int", INT);
+        registerMc("int_range", INT_RANGE);
+        registerMc("float_range", FLOAT_RANGE);
+        register("schema", SCHEMA);
     }
 }

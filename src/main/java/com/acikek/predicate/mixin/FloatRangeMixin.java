@@ -20,7 +20,7 @@ public abstract class FloatRangeMixin implements FloatRangeWrapper {
 
     @Override
     public @NotNull RegularPredicateSerializer<?> rp$serializer() {
-        return RegularPredicates.FLOAT;
+        return RegularPredicates.FLOAT_RANGE;
     }
 
     @Override

@@ -1,8 +1,11 @@
 package com.acikek.predicate;
 
 import com.acikek.predicate.api.RegularPredicates;
+import com.acikek.predicate.api.schema.PredicateSchema;
+import com.acikek.predicate.api.schema.SchemaElement;
 import com.acikek.predicate.api.schema.map.PredicateMap;
 import com.google.common.collect.ImmutableMap;
+import com.google.gson.GsonBuilder;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.block.Blocks;
 import net.minecraft.nbt.NbtCompound;
@@ -13,6 +16,8 @@ import net.minecraft.state.property.Properties;
 import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 public class RegularPredicatesMod implements ModInitializer {
 
@@ -47,5 +52,16 @@ public class RegularPredicatesMod implements ModInitializer {
         ));
 
         System.out.println(map.test(nbt, 100, Blocks.BAMBOO.getDefaultState()));
+
+        var schema = new PredicateSchema(List.of(
+                SchemaElement.type("count", RegularPredicates.INT_RANGE),
+                SchemaElement.type("nbt", RegularPredicates.NBT),
+                SchemaElement.map("usage", List.of(
+                        SchemaElement.type("block", RegularPredicates.STATE),
+                        SchemaElement.type("damage", RegularPredicates.FLOAT_RANGE)
+                ))
+        ));
+
+        System.out.println(new GsonBuilder().setPrettyPrinting().create().toJson(schema.toJson()));
     }
 }

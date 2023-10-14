@@ -3,10 +3,13 @@ package com.acikek.predicate.api.schema;
 import com.acikek.predicate.api.FriendlyPredicate;
 import com.acikek.predicate.api.schema.map.PredicateMapFunny;
 import com.acikek.predicate.api.serializer.RegularPredicateSerializer;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-import net.minecraft.network.PacketByteBuf;
+import net.minecraft.util.JsonHelper;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 public record PredicateSchema(Collection<SchemaElement> elements) implements FriendlyPredicate<PredicateMapFunny> {
 
@@ -25,26 +28,21 @@ public record PredicateSchema(Collection<SchemaElement> elements) implements Fri
         return SchemaElement.test(elements, map);
     }
 
-    public static class Serializer implements RegularPredicateSerializer<PredicateSchema> {
-
-        @Override
-        public PredicateSchema fromJson(JsonElement json) {
-            return
+    public static PredicateSchema fromJson(JsonElement element) {
+        var array = JsonHelper.asArray(element, "schema");
+        List<SchemaElement> elements = new ArrayList<>();
+        for (var subElement : array) {
+            var obj = JsonHelper.asObject(subElement, "element object");
+            elements.add(SchemaElement.fromJson(obj));
         }
+        return new PredicateSchema(elements);
+    }
 
-        @Override
-        public JsonElement toJson(PredicateSchema instance) {
-            return null;
+    public JsonElement toJson() {
+        var array = new JsonArray();
+        for (var element : elements) {
+            array.add(element.toJson());
         }
-
-        @Override
-        public PredicateSchema read(PacketByteBuf buf) {
-            return null;
-        }
-
-        @Override
-        public void write(PacketByteBuf buf, PredicateSchema instance) {
-
-        }
+        return array;
     }
 }

@@ -20,7 +20,7 @@ public abstract class IntRangeMixin implements IntRangeWrapper {
 
     @Override
     public @NotNull RegularPredicateSerializer<?> rp$serializer() {
-        return RegularPredicates.INT;
+        return RegularPredicates.INT_RANGE;
     }
 
     @Override
