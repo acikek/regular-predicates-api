@@ -2,41 +2,32 @@ package com.acikek.predicate.api.schema;
 
 import com.acikek.predicate.api.RegularPredicate;
 import com.acikek.predicate.api.RegularPredicates;
+import com.acikek.predicate.api.impl.schema.SchemaElementImpls;
 import com.acikek.predicate.api.schema.map.PredicateMapFunny;
 import com.acikek.predicate.api.serializer.RegularPredicateSerializer;
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.JsonSyntaxException;
 import net.minecraft.util.Identifier;
-import net.minecraft.world.gen.placementmodifier.SurfaceThresholdFilterPlacementModifier;
+import net.minecraft.util.JsonHelper;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Optional;
+import java.util.List;
+import java.util.NoSuchElementException;
 
-// Needs a *private* constructor, otherwise an interface or record would work.
-public class SchemaElement {
+public interface SchemaElement {
 
-    /*public static final Codec<SchemaElement> CODEC = RecordCodecBuilder.create(instance ->
-            instance.group(
-                    Codec.STRING.fieldOf("name").forGetter(SchemaElement::name),
-                    Identifier.CODEC.optionalFieldOf("type").forGetter(element -> Optional.ofNullable(element.typeId())),
-                    Codec.
-            ).apply(instance, SchemaElement::new)
-    );*/
+    String name();
 
-    private final String name;
-    private final RegularPredicateSerializer<?> type;
-    private final Collection<SchemaElement> children;
+    @Nullable RegularPredicateSerializer<?> type();
 
-    private SchemaElement(String name, RegularPredicateSerializer<?> type, Collection<SchemaElement> children) {
-        this.name = name;
-        this.type = type;
-        this.children = children;
-        SurfaceThresholdFilterPlacementModifier.CODEC
-    }
+    Collection<SchemaElement> children();
 
     // Neat, these methods call each other
-    public static boolean test(Collection<SchemaElement> elements, PredicateMapFunny map) {
+    static boolean test(Collection<SchemaElement> elements, PredicateMapFunny map) {
         for (var element : elements) {
             var predicate = map.predicates().get(element.name());
             if (predicate == null || !element.test(predicate)) {
@@ -46,29 +37,66 @@ public class SchemaElement {
         return true;
     }
 
-    public boolean test(RegularPredicate<?> predicate) {
-        if (predicate instanceof PredicateMapFunny innerMap && !children.isEmpty()) {
-            return test(children, innerMap);
+    default boolean test(RegularPredicate<?> predicate) {
+        if (predicate instanceof PredicateMapFunny innerMap && !children().isEmpty()) {
+            return test(children(), innerMap);
         }
-        return predicate.rp$serializer() == type;
+        return predicate.rp$serializer() == type();
     }
 
-    public String name() {
-        return name;
-    }
-
-    public @Nullable RegularPredicateSerializer<?> type() {
-        return type;
-    }
-
-    public @Nullable Identifier typeId() {
-        if (type == null) {
-            return null;
+    static SchemaElement fromJson(JsonObject obj) {
+        var name = JsonHelper.getString(obj, "name");
+        var type = JsonHelper.getElement(obj, "type");
+        if (JsonHelper.isString(type)) {
+            var id = new Identifier(type.getAsString());
+            var serializer = RegularPredicates.REGISTRY.get(id);
+            if (serializer == null) {
+                throw new NoSuchElementException("serializer '" + id + "' does not exist");
+            }
+            return SchemaElement.type(name, serializer);
         }
-        return RegularPredicates.REGISTRY.getId(type);
+        if (!type.isJsonArray()) {
+            throw new JsonSyntaxException("element type must be a serializer ID or a new schema array");
+        }
+        var jsonArray = type.getAsJsonArray();
+        if (jsonArray.isEmpty()) {
+            throw new JsonSyntaxException("element mapping must not be empty");
+        }
+        List<SchemaElement> children = new ArrayList<>();
+        for (var element : jsonArray) {
+            var subObj = JsonHelper.asObject(element, "child element");
+            children.add(fromJson(subObj));
+        }
+        return SchemaElement.map(name, children);
     }
 
-    public Collection<SchemaElement> children() {
-        return children;
+    default JsonObject toJson() {
+        var obj = new JsonObject();
+        obj.add("name", new JsonPrimitive(name()));
+        if (type() != null) {
+            var id = RegularPredicates.REGISTRY.getId(type());
+            if (id == null) {
+                throw new JsonSyntaxException("element type is not registered");
+            }
+            obj.add("type", new JsonPrimitive(id.toString()));
+            return obj;
+        }
+        if (children().isEmpty()) {
+            throw new JsonSyntaxException("element must either have a predicate type or children");
+        }
+        var array = new JsonArray();
+        for (var child : children()) {
+            array.add(child.toJson());
+        }
+        obj.add("type", array);
+        return obj;
+    }
+
+    static SchemaElement type(String name, RegularPredicateSerializer<?> type) {
+        return new SchemaElementImpls.Predicate(name, type);
+    }
+
+    static SchemaElement map(String name, Collection<SchemaElement> children) {
+        return new SchemaElementImpls.Mapping(name, children);
     }
 }
