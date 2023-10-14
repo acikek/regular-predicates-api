@@ -1,8 +1,7 @@
 package com.acikek.predicate;
 
 import com.acikek.predicate.api.RegularPredicates;
-import com.acikek.predicate.api.impl.map.PredicateMapImpl;
-import com.acikek.predicate.api.map.PredicateMap;
+import com.acikek.predicate.api.schema.map.PredicateMap;
 import com.google.common.collect.ImmutableMap;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.block.Blocks;

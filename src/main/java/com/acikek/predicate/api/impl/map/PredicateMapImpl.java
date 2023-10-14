@@ -3,7 +3,7 @@ package com.acikek.predicate.api.impl.map;
 import com.acikek.predicate.RegularPredicatesMod;
 import com.acikek.predicate.api.RegularPredicate;
 import com.acikek.predicate.api.RegularPredicates;
-import com.acikek.predicate.api.map.PredicateMap;
+import com.acikek.predicate.api.schema.map.PredicateMap;
 import com.google.common.collect.ImmutableMap;
 
 import java.util.List;

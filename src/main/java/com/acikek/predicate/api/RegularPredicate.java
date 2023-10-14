@@ -16,29 +16,4 @@ public interface RegularPredicate<T> {
     default boolean rp$test(T t) {
         throw new AssertionError();
     }
-
-    // TODO: make use of this idea...
-    /*interface Friendly<T> extends RegularPredicate<T>, Predicate<T> {
-
-        Class<T> contextType();
-
-        RegularPredicateSerializer<?> serializer();
-
-        @Override
-        @NotNull
-        default Class<T> rp$contextType() {
-            return contextType();
-        }
-
-        @Override
-        @NotNull
-        default RegularPredicateSerializer<?> rp$serializer() {
-            return serializer();
-        }
-
-        @Override
-        default boolean rp$test(T t) {
-            return test(t);
-        }
-    }*/
 }

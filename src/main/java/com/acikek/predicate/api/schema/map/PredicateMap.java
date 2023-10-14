@@ -1,4 +1,4 @@
-package com.acikek.predicate.api.map;
+package com.acikek.predicate.api.schema.map;
 
 import com.acikek.predicate.api.RegularPredicate;
 import com.acikek.predicate.api.impl.map.PredicateMapImpl;
