@@ -6,9 +6,17 @@ import com.google.gson.JsonElement;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.JsonOps;
 import net.minecraft.network.PacketByteBuf;
+import org.jetbrains.annotations.NotNull;
 
+/**
+ * A {@link Codec}-backed predicate serializer. Specifically, the supplied codec should be able to
+ * serialize and deserialize the relevant predicate type.
+ */
 public interface CodecPredicateSerializer<P extends RegularPredicate<?>> extends RegularPredicateSerializer<P> {
 
+    /**
+     * @return the codec to use for serialization
+     */
     Codec<P> codec();
 
     @Override
@@ -19,7 +27,7 @@ public interface CodecPredicateSerializer<P extends RegularPredicate<?>> extends
     }
 
     @Override
-    default JsonElement toJson(P instance) {
+    default JsonElement toJson(@NotNull P instance) {
         return codec().encodeStart(JsonOps.INSTANCE, instance)
                 .getOrThrow(false, RegularPredicatesMod.LOGGER::error);
     }
@@ -30,7 +38,7 @@ public interface CodecPredicateSerializer<P extends RegularPredicate<?>> extends
     }
 
     @Override
-    default void write(PacketByteBuf buf, P instance) {
+    default void write(PacketByteBuf buf, @NotNull P instance) {
         buf.encodeAsJson(codec(), instance);
     }
 }

@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.JsonHelper;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Function;
 
@@ -21,7 +22,7 @@ public record DelegatedPredicateSerializer<P extends RegularPredicate<?>>
     }
 
     @Override
-    public JsonElement toJson(P instance) {
+    public JsonElement toJson(@NotNull P instance) {
         return serializer.apply(instance);
     }
 
@@ -32,7 +33,7 @@ public record DelegatedPredicateSerializer<P extends RegularPredicate<?>>
     }
 
     @Override
-    public void write(PacketByteBuf buf, P instance) {
+    public void write(PacketByteBuf buf, @NotNull P instance) {
         var json = GSON.toJson(serializer.apply(instance));
         buf.writeString(json);
     }
