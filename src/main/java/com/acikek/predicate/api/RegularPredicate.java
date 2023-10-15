@@ -11,9 +11,10 @@ import java.util.function.Predicate;
  * <p>
  * Most regular predicates should be implemented as a {@link FriendlyPredicate}.
  * Note that the {@code rp$} prefix is used to prevent method name clashes with vanilla predicates.
+ * <p>
+ * For utilities relating to regular predicates, see {@link RegularPredicatesAPI}.
  *
  * @param <T> the type of the input to the predicate
- * @see RegularPredicates
  * @see Predicate
  */
 public interface RegularPredicate<T> {

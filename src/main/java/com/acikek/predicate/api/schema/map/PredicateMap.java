@@ -3,7 +3,7 @@ package com.acikek.predicate.api.schema.map;
 import com.acikek.predicate.RegularPredicatesMod;
 import com.acikek.predicate.api.FriendlyPredicate;
 import com.acikek.predicate.api.RegularPredicate;
-import com.acikek.predicate.api.RegularPredicates;
+import com.acikek.predicate.api.RegularPredicatesAPI;
 import com.acikek.predicate.api.schema.PredicateSchema;
 import com.acikek.predicate.api.serializer.PredicateSerializers;
 import com.acikek.predicate.api.serializer.RegularPredicateSerializer;
@@ -51,31 +51,10 @@ public class PredicateMap implements FriendlyPredicate<Map<String, Object>> {
         return predicates;
     }
 
-    // TODO switch these to debugs :P
-    // TODO put this method at the very bottom
-    // TODO yeah make these debug logs but like lock them behind a bool or smth cuz serializing every time u want to test anything? no
-    private static <T> boolean test(String name, Object value, RegularPredicate<T> predicate) {
-        Objects.requireNonNull(predicate);
-        Objects.requireNonNull(predicate.rp$contextType());
-        RegularPredicatesMod.LOGGER.info("Testing '{}'...", name);
-        RegularPredicatesMod.LOGGER.info("- Predicate: '{}', {}", RegularPredicates.getId(predicate), RegularPredicates.toJson(predicate));
-        RegularPredicatesMod.LOGGER.info("- Input: {} (should be {})", value, predicate.rp$contextType());
-        try {
-            boolean result = RegularPredicates.tryTest(predicate, value);
-            RegularPredicatesMod.LOGGER.info("- Result: {}", result);
-            return result;
-        }
-        catch (ClassCastException exception) {
-            throw new IllegalStateException("failed to test predicate '" + name + "'", exception);
-        }
-    }
-
     public boolean test(String name, Object value) {
         return test(name, value, predicates.get(name));
     }
 
-    // TODO: this doesn't really work with nested predicate maps so examine whether this approach
-    // TODO: is still worth it / fix it (it probably is worth it)
     public boolean test(List<Object> values) {
         var predicateList = predicates.entrySet().stream().toList();
         for (int i = 0; i < values.size(); i++) {
@@ -107,8 +86,26 @@ public class PredicateMap implements FriendlyPredicate<Map<String, Object>> {
     public JsonElement toJson() {
         JsonObject obj = new JsonObject();
         for (var entry : predicates.entrySet()) {
-            obj.add(entry.getKey(), RegularPredicates.toJson(entry.getValue()));
+            obj.add(entry.getKey(), RegularPredicatesAPI.toJson(entry.getValue()));
         }
         return obj;
+    }
+
+    // TODO switch these to debugs :P
+    // TODO yeah make these debug logs but like lock them behind a bool or smth cuz serializing every time u want to test anything? no
+    private static <T> boolean test(String name, Object value, RegularPredicate<T> predicate) {
+        Objects.requireNonNull(predicate);
+        Objects.requireNonNull(predicate.rp$contextType());
+        RegularPredicatesMod.LOGGER.info("Testing '{}'...", name);
+        RegularPredicatesMod.LOGGER.info("- Predicate: '{}', {}", RegularPredicatesAPI.getId(predicate), RegularPredicatesAPI.toJson(predicate));
+        RegularPredicatesMod.LOGGER.info("- Input: {} (should be {})", value, predicate.rp$contextType());
+        try {
+            boolean result = RegularPredicatesAPI.tryTest(predicate, value);
+            RegularPredicatesMod.LOGGER.info("- Result: {}", result);
+            return result;
+        }
+        catch (ClassCastException exception) {
+            throw new IllegalStateException("failed to test predicate '" + name + "'", exception);
+        }
     }
 }
