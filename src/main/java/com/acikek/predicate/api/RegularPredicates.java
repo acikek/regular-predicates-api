@@ -3,6 +3,7 @@ package com.acikek.predicate.api;
 import com.acikek.predicate.RegularPredicatesMod;
 import com.acikek.predicate.api.schema.PredicateSchema;
 import com.acikek.predicate.api.serializer.RegularPredicateSerializer;
+import com.acikek.predicate.api.util.EnumPredicate;
 import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
 import net.minecraft.predicate.NbtPredicate;
 import net.minecraft.predicate.NumberRange;
@@ -10,6 +11,7 @@ import net.minecraft.predicate.StatePredicate;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.Direction;
 import org.jetbrains.annotations.ApiStatus;
 
 public class RegularPredicates {
@@ -21,6 +23,8 @@ public class RegularPredicates {
     public static final RegularPredicateSerializer<StatePredicate> STATE = RegularPredicateSerializer.delegated(StatePredicate::fromJson, StatePredicate::toJson);
     public static final RegularPredicateSerializer<NumberRange.IntRange> INT_RANGE = RegularPredicateSerializer.delegated(NumberRange.IntRange::fromJson, NumberRange.IntRange::toJson);
     public static final RegularPredicateSerializer<NumberRange.FloatRange> FLOAT_RANGE = RegularPredicateSerializer.delegated(NumberRange.FloatRange::fromJson, NumberRange.FloatRange::toJson);
+
+    public static final RegularPredicateSerializer<EnumPredicate<Direction>> DIRECTION = RegularPredicateSerializer.forEnum(Direction.class);
 
     public static final RegularPredicateSerializer<PredicateSchema> SCHEMA = RegularPredicateSerializer.delegated(PredicateSchema::fromJson, PredicateSchema::toJson);
 
@@ -42,6 +46,7 @@ public class RegularPredicates {
         registerMc("state", STATE);
         registerMc("int_range", INT_RANGE);
         registerMc("float_range", FLOAT_RANGE);
+        registerMc("direction", DIRECTION);
         register("schema", SCHEMA);
     }
 }

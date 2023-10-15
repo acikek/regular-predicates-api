@@ -4,6 +4,8 @@ import com.acikek.predicate.api.RegularPredicate;
 import com.acikek.predicate.api.RegularPredicates;
 import com.acikek.predicate.api.impl.serializer.CodecPredicateSerializerInstance;
 import com.acikek.predicate.api.impl.serializer.DelegatedPredicateSerializer;
+import com.acikek.predicate.api.impl.serializer.EnumPredicateSerializer;
+import com.acikek.predicate.api.util.EnumPredicate;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonNull;
 import com.mojang.serialization.Codec;
@@ -32,13 +34,13 @@ public interface RegularPredicateSerializer<P extends RegularPredicate<?>> {
      * @param json <b>any</b> JSON element. May be {@code null} or {@link JsonNull#INSTANCE}!
      * @return a deserialized predicate instance
      */
-    P fromJson(@Nullable JsonElement json);
+    P fromJson(JsonElement json);
 
     /**
      * @param instance a predicate instance
      * @return a serialized predicate JSON element. May be {@code null} or {@link JsonNull#INSTANCE}.
      */
-    @Nullable JsonElement toJson(@NotNull P instance);
+    JsonElement toJson(@NotNull P instance);
 
     /**
      * @param buf the byte buffer to read from
@@ -66,5 +68,12 @@ public interface RegularPredicateSerializer<P extends RegularPredicate<?>> {
      */
     static <P extends RegularPredicate<?>> RegularPredicateSerializer<P> delegated(Function<JsonElement, P> deserializer, Function<P, JsonElement> serializer) {
         return new DelegatedPredicateSerializer<>(deserializer, serializer);
+    }
+
+    /**
+     * @return a predicate serializer for the specified enum class
+     */
+    static <E extends Enum<E>> RegularPredicateSerializer<EnumPredicate<E>> forEnum(Class<E> type) {
+        return new EnumPredicateSerializer<>(type);
     }
 }

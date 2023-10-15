@@ -1,9 +1,11 @@
 package com.acikek.predicate;
 
 import com.acikek.predicate.api.RegularPredicates;
+import com.acikek.predicate.api.RegularPredicatesAPI;
 import com.acikek.predicate.api.schema.PredicateSchema;
 import com.acikek.predicate.api.schema.SchemaElement;
 import com.acikek.predicate.api.schema.map.PredicateMap;
+import com.acikek.predicate.api.util.EnumPredicate;
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.GsonBuilder;
 import net.fabricmc.api.ModInitializer;
@@ -14,6 +16,7 @@ import net.minecraft.predicate.NumberRange;
 import net.minecraft.predicate.StatePredicate;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.Direction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -69,5 +72,8 @@ public class RegularPredicatesMod implements ModInitializer {
 
         System.out.println(new GsonBuilder().setPrettyPrinting().create().toJson(mapv2.schema().toJson()));
         System.out.println(mapv2.test(100, nbt, Map.of("damage", 0.4, "state", Blocks.BAMBOO.getDefaultState())));
+
+        var direction = new EnumPredicate<>(RegularPredicates.DIRECTION, Direction.DOWN);
+        System.out.println(RegularPredicatesAPI.toJson(direction));
     }
 }

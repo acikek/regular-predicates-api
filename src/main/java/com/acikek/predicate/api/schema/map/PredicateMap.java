@@ -5,7 +5,6 @@ import com.acikek.predicate.api.FriendlyPredicate;
 import com.acikek.predicate.api.RegularPredicate;
 import com.acikek.predicate.api.RegularPredicatesAPI;
 import com.acikek.predicate.api.schema.PredicateSchema;
-import com.acikek.predicate.api.serializer.PredicateSerializers;
 import com.acikek.predicate.api.serializer.RegularPredicateSerializer;
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonElement;
@@ -26,7 +25,7 @@ public class PredicateMap implements FriendlyPredicate<Map<String, Object>> {
     public PredicateMap(PredicateSchema schema, ImmutableMap<String, RegularPredicate<?>> predicates) {
         this.schema = schema;
         this.predicates = predicates;
-        serializer = PredicateSerializers.delegated(schema::deserialize, PredicateMap::toJson);
+        serializer = RegularPredicateSerializer.delegated(schema::deserialize, PredicateMap::toJson);
     }
 
     public PredicateMap(ImmutableMap<String, RegularPredicate<?>> predicates) {
