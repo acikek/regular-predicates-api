@@ -1,6 +1,7 @@
 package com.acikek.predicate.api;
 
 import com.acikek.predicate.api.serializer.RegularPredicateSerializer;
+import com.google.gson.JsonElement;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Predicate;
@@ -32,6 +33,11 @@ public interface RegularPredicate<T> {
      */
     default @NotNull RegularPredicateSerializer<?> rp$serializer() {
         throw new AssertionError();
+    }
+
+    // TODO: this would be really useful for data criteria but need to figure out a justification otherwise and/or network stuff
+    default T rp$deserializeValue(JsonElement element) {
+        return null;
     }
 
     /**

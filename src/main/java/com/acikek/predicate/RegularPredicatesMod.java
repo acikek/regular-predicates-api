@@ -5,7 +5,7 @@ import com.acikek.predicate.api.RegularPredicatesAPI;
 import com.acikek.predicate.api.schema.PredicateSchema;
 import com.acikek.predicate.api.schema.SchemaElement;
 import com.acikek.predicate.api.schema.map.PredicateMap;
-import com.acikek.predicate.api.util.EnumPredicate;
+import com.acikek.predicate.api.enums.EnumPredicate;
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.GsonBuilder;
 import net.fabricmc.api.ModInitializer;
@@ -73,7 +73,7 @@ public class RegularPredicatesMod implements ModInitializer {
         System.out.println(new GsonBuilder().setPrettyPrinting().create().toJson(mapv2.schema().toJson()));
         System.out.println(mapv2.test(100, nbt, Map.of("damage", 0.4, "state", Blocks.BAMBOO.getDefaultState())));
 
-        var direction = new EnumPredicate<>(RegularPredicates.DIRECTION, Direction.DOWN);
+        var direction = RegularPredicates.DIRECTION.create(Direction.DOWN); //new EnumPredicate<>(RegularPredicates.DIRECTION, Direction.DOWN);
         System.out.println(RegularPredicatesAPI.toJson(direction));
     }
 }

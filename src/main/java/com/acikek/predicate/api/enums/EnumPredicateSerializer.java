@@ -1,7 +1,6 @@
-package com.acikek.predicate.api.impl.serializer;
+package com.acikek.predicate.api.enums;
 
 import com.acikek.predicate.api.serializer.RegularPredicateSerializer;
-import com.acikek.predicate.api.util.EnumPredicate;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSyntaxException;
@@ -12,6 +11,11 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Locale;
 
+/**
+ * A serializer for an {@link EnumPredicate}. Each used enum should have its own
+ * registered enum predicate serializer.
+ * @param <E> the enum type
+ */
 public record EnumPredicateSerializer<E extends Enum<E>>(
         Class<E> type) implements RegularPredicateSerializer<EnumPredicate<E>> {
 
@@ -38,5 +42,16 @@ public record EnumPredicateSerializer<E extends Enum<E>>(
     @Override
     public void write(PacketByteBuf buf, @NotNull EnumPredicate<E> instance) {
         buf.writeEnumConstant(instance.instance());
+    }
+
+    // TODO: consider a creation method (for a serializer) method on here? instead of on RegularPredicateSerializer
+
+    // TODO: 'createPredicate'?
+
+    /**
+     * @return an enum predicate based on the specified enum constant
+     */
+    public EnumPredicate<E> create(E instance) {
+        return new EnumPredicate<>(this, instance);
     }
 }

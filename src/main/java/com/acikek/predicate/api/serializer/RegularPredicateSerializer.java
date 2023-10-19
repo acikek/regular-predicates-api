@@ -4,8 +4,7 @@ import com.acikek.predicate.api.RegularPredicate;
 import com.acikek.predicate.api.RegularPredicates;
 import com.acikek.predicate.api.impl.serializer.CodecPredicateSerializerInstance;
 import com.acikek.predicate.api.impl.serializer.DelegatedPredicateSerializer;
-import com.acikek.predicate.api.impl.serializer.EnumPredicateSerializer;
-import com.acikek.predicate.api.util.EnumPredicate;
+import com.acikek.predicate.api.enums.EnumPredicateSerializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonNull;
 import com.mojang.serialization.Codec;
@@ -72,7 +71,7 @@ public interface RegularPredicateSerializer<P extends RegularPredicate<?>> {
     /**
      * @return a predicate serializer for the specified enum class
      */
-    static <E extends Enum<E>> RegularPredicateSerializer<EnumPredicate<E>> forEnum(Class<E> type) {
+    static <E extends Enum<E>> EnumPredicateSerializer<E> forEnum(Class<E> type) {
         return new EnumPredicateSerializer<>(type);
     }
 }

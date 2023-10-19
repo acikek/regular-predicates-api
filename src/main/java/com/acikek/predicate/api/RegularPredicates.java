@@ -1,9 +1,9 @@
 package com.acikek.predicate.api;
 
 import com.acikek.predicate.RegularPredicatesMod;
+import com.acikek.predicate.api.enums.EnumPredicateSerializer;
 import com.acikek.predicate.api.schema.PredicateSchema;
 import com.acikek.predicate.api.serializer.RegularPredicateSerializer;
-import com.acikek.predicate.api.util.EnumPredicate;
 import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
 import net.minecraft.predicate.NbtPredicate;
 import net.minecraft.predicate.NumberRange;
@@ -24,7 +24,7 @@ public class RegularPredicates {
     public static final RegularPredicateSerializer<NumberRange.IntRange> INT_RANGE = RegularPredicateSerializer.delegated(NumberRange.IntRange::fromJson, NumberRange.IntRange::toJson);
     public static final RegularPredicateSerializer<NumberRange.FloatRange> FLOAT_RANGE = RegularPredicateSerializer.delegated(NumberRange.FloatRange::fromJson, NumberRange.FloatRange::toJson);
 
-    public static final RegularPredicateSerializer<EnumPredicate<Direction>> DIRECTION = RegularPredicateSerializer.forEnum(Direction.class);
+    public static final EnumPredicateSerializer<Direction> DIRECTION = RegularPredicateSerializer.forEnum(Direction.class);
 
     public static final RegularPredicateSerializer<PredicateSchema> SCHEMA = RegularPredicateSerializer.delegated(PredicateSchema::fromJson, PredicateSchema::toJson);
 
