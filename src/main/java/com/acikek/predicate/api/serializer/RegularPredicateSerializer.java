@@ -11,7 +11,6 @@ import com.google.gson.JsonNull;
 import com.mojang.serialization.Codec;
 import net.minecraft.network.PacketByteBuf;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Function;
 
