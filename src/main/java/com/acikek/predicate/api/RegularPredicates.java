@@ -10,8 +10,13 @@ import net.minecraft.predicate.NumberRange;
 import net.minecraft.predicate.StatePredicate;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
+import net.minecraft.util.DyeColor;
+import net.minecraft.util.Formatting;
+import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.UseAction;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.EightWayDirection;
 import org.jetbrains.annotations.ApiStatus;
 
 public class RegularPredicates {
@@ -25,6 +30,14 @@ public class RegularPredicates {
     public static final RegularPredicateSerializer<NumberRange.FloatRange> FLOAT_RANGE = RegularPredicateSerializer.delegated(NumberRange.FloatRange::fromJson, NumberRange.FloatRange::toJson);
 
     public static final EnumPredicateSerializer<Direction> DIRECTION = RegularPredicateSerializer.forEnum(Direction.class);
+    public static final EnumPredicateSerializer<Direction.Axis> AXIS = RegularPredicateSerializer.forEnum(Direction.Axis.class);
+    public static final EnumPredicateSerializer<Direction.AxisDirection> AXIS_DIRECTION = RegularPredicateSerializer.forEnum(Direction.AxisDirection.class);
+    public static final EnumPredicateSerializer<Direction.Type> DIRECTION_TYPE = RegularPredicateSerializer.forEnum(Direction.Type.class);
+    public static final EnumPredicateSerializer<EightWayDirection> EIGHT_WAY_DIRECTION = RegularPredicateSerializer.forEnum(EightWayDirection.class);
+    public static final EnumPredicateSerializer<Hand> HAND = RegularPredicateSerializer.forEnum(Hand.class);
+    public static final EnumPredicateSerializer<DyeColor> DYE_COLOR = RegularPredicateSerializer.forEnum(DyeColor.class);
+    public static final EnumPredicateSerializer<Formatting> FORMATTING = RegularPredicateSerializer.forEnum(Formatting.class);
+    public static final EnumPredicateSerializer<UseAction> USE_ACTION = RegularPredicateSerializer.forEnum(UseAction.class);
 
     public static final RegularPredicateSerializer<PredicateSchema> SCHEMA = RegularPredicateSerializer.delegated(PredicateSchema::fromJson, PredicateSchema::toJson);
 
@@ -47,6 +60,8 @@ public class RegularPredicates {
         registerMc("int_range", INT_RANGE);
         registerMc("float_range", FLOAT_RANGE);
         registerMc("direction", DIRECTION);
+        registerMc("axis", AXIS);
+        registerMc("hand", HAND);
         register("schema", SCHEMA);
     }
 }
