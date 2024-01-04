@@ -61,7 +61,13 @@ public class RegularPredicates {
         registerMc("float_range", FLOAT_RANGE);
         registerMc("direction", DIRECTION);
         registerMc("axis", AXIS);
+        registerMc("axis_direction", AXIS_DIRECTION);
+        registerMc("direction_type", DIRECTION_TYPE);
+        registerMc("eight_way_direction", EIGHT_WAY_DIRECTION);
         registerMc("hand", HAND);
+        registerMc("dye_color", DYE_COLOR);
+        registerMc("formatting", FORMATTING);
+        registerMc("use_action", USE_ACTION);
         register("schema", SCHEMA);
     }
 }
